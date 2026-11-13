@@ -1,0 +1,38 @@
+[
+  {
+    "combinacao": "texto principal",
+    "texto": "#f1f5ef",
+    "fundo": "#121713",
+    "razao": 16.45
+  },
+  {
+    "combinacao": "texto auxiliar",
+    "texto": "#aab6aa",
+    "fundo": "#121713",
+    "razao": 8.62
+  },
+  {
+    "combinacao": "ação principal",
+    "texto": "#0b1102",
+    "fundo": "#ccff00",
+    "razao": 16.32
+  },
+  {
+    "combinacao": "status novo",
+    "texto": "#dcff85",
+    "fundo": "#263210",
+    "razao": 12.09
+  },
+  {
+    "combinacao": "status separado",
+    "texto": "#ffe0a4",
+    "fundo": "#342b13",
+    "razao": 10.96
+  },
+  {
+    "combinacao": "status enviado",
+    "texto": "#b7eee1",
+    "fundo": "#17312e",
+    "razao": 10.78
+  }
+]

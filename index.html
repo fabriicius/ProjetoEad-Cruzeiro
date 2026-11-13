@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OFF Nutrition Lab | Pedidos</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#conteudo">Ir para o conteúdo</a>
+  <aside class="sidebar" aria-label="Navegação principal">
+    <a class="brand" href="#pedidos" aria-label="OFF Nutrition Lab, início"><strong>OFF<span aria-hidden="true">●</span></strong><small>NUTRITION LAB</small></a>
+    <div class="sidebar-label">OPERAÇÃO</div>
+    <nav>
+      <a class="nav-item active" href="#pedidos"><span aria-hidden="true">▤</span> Pedidos <span class="nav-count" id="order-count">40</span></a>
+      <button class="nav-item" data-dialog="produtos"><span aria-hidden="true">▣</span> Produtos</button>
+      <button class="nav-item" data-dialog="duvidas"><span aria-hidden="true">?</span> Dúvidas frequentes</button>
+    </nav>
+    <div class="sidebar-bottom"><div class="avatar" aria-hidden="true">OF</div><div><b>Equipe OFF</b><small>Demonstração</small></div><button id="sair" class="icon-button" aria-label="Sair da demonstração">↗</button></div>
+  </aside>
+  <main id="conteudo" tabindex="-1">
+    <header class="topbar"><span>OFF NUTRITION LAB <span class="separator">/</span> GESTÃO DE PEDIDOS</span><span class="demo-tag"><i aria-hidden="true"></i> Dados fictícios</span></header>
+    <div id="app"></div>
+    <footer class="app-footer"><span>Protótipo de interface · sem vendas ou pagamentos reais</span><button id="reiniciar" class="text-button">Reiniciar demonstração</button></footer>
+  </main>
+  <dialog id="aux-dialog" aria-labelledby="dialog-title"><div class="dialog-head"><h2 id="dialog-title"></h2><button id="fechar-dialog" class="icon-button" aria-label="Fechar">×</button></div><div id="dialog-content"></div></dialog>
+  <div id="toast" role="status" class="toast" hidden></div>
+</body>
+</html>
