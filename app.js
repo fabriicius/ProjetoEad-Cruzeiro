@@ -6,16 +6,47 @@ const symbols = {novo:'○',separado:'▣',enviado:'✓'};
 const channels = ['WhatsApp','Instagram','Shopify','Shopee'];
 const products = [{sku:'COQ-001',name:'Coqueteleira OFF 600 ml',price:3990,stock:2},{sku:'CAT-001',name:'Catalyze Pro 300 g',price:11990,stock:8}];
 const storageKey = 'off-prototipo-v1';
+const params=new URLSearchParams(location.search);
+const isolated=params.has('teste')||params.has('captura')||params.has('tela');
 function seed(){return {stocks:{'COQ-001':2,'CAT-001':8},orders:Array.from({length:40},(_,i)=>({id:1041-i,channel:channels[(i+1)%4],date:i<4?'13/11/2026':'12/11/2026',status:i===0?'enviado':['novo','separado','enviado'][i%3],items:[{sku:'COQ-001',q:1,unit:3990}]})),result:null};}
 let state;
-try {state=JSON.parse(localStorage.getItem(storageKey)) || seed(); if(!state.orders || !state.stocks) state=seed();} catch {state=seed();}
+function validDate(value){
+  if(typeof value!=='string'||!/^\d{2}\/\d{2}\/\d{4}$/.test(value))return false;
+  const [day,month,year]=value.split('/').map(Number),date=new Date(year,month-1,day);
+  return date.getFullYear()===year&&date.getMonth()===month-1&&date.getDate()===day;
+}
+function validState(value){
+  if(!value||typeof value!=='object'||!value.stocks||typeof value.stocks!=='object'||Array.isArray(value.stocks)||!Array.isArray(value.orders))return false;
+  if(!products.every(p=>Number.isSafeInteger(value.stocks[p.sku])&&value.stocks[p.sku]>=0))return false;
+  const ids=new Set();
+  return value.orders.every(o=>{
+    if(!o||!Number.isSafeInteger(o.id)||o.id<1||o.id>=Number.MAX_SAFE_INTEGER||ids.has(o.id)||!channels.includes(o.channel)||!Object.hasOwn(names,o.status)||!validDate(o.date)||!Array.isArray(o.items)||!o.items.length)return false;
+    ids.add(o.id);
+    const skus=new Set();
+    return o.items.every(i=>{
+      if(!i||!products.some(p=>p.sku===i.sku)||skus.has(i.sku)||!Number.isSafeInteger(i.q)||i.q<1||!Number.isSafeInteger(i.unit)||i.unit<0||!Number.isSafeInteger(i.q*i.unit))return false;
+      skus.add(i.sku);return true;
+    })&&Number.isSafeInteger(o.items.reduce((sum,i)=>sum+i.q*i.unit,0));
+  });
+}
+function loadState(){
+  if(isolated)return seed();
+  try{
+    const saved=JSON.parse(localStorage.getItem(storageKey));
+    if(!validState(saved))return seed();
+    const result=saved.result;
+    saved.result=result&&['created','existing'].includes(result.kind)&&saved.orders.some(o=>o.id===result.id)?{kind:result.kind,id:result.id}:null;
+    return saved;
+  }catch{return seed();}
+}
+state=loadState();
 let draft={channel:'WhatsApp',items:[{sku:'COQ-001',q:1,unit:3990}],selected:'COQ-001',q:1};
 let page=1;
 const app=document.getElementById('app');
 const product=sku=>products.find(p=>p.sku===sku);
 const total=items=>items.reduce((sum,i)=>sum+i.q*i.unit,0);
 const badge=status=>`<span class="badge ${esc(status)}"><span aria-hidden="true">${symbols[status]}</span>${names[status]}</span>`;
-const persist=()=>{try{localStorage.setItem(storageKey,JSON.stringify(state));}catch{}};
+const persist=()=>{if(isolated)return;try{localStorage.setItem(storageKey,JSON.stringify(state));}catch{}};
 function toast(text){const el=document.getElementById('toast');el.textContent=text;el.hidden=false;setTimeout(()=>el.hidden=true,2200);}
 function steps(current){return `<div class="step-line" aria-label="Etapas do registro"><div class="${current===1?'current':''}"><span>1</span> Pedidos</div><i class="step-rule" aria-hidden="true"></i><div class="${current===2?'current':''}"><span>2</span> Novo pedido</div><i class="step-rule" aria-hidden="true"></i><div class="${current===3?'current':''}"><span>3</span> Resultado</div></div>`;}
 function heading(title,sub,action='',eyebrow='CONTROLE DA OPERAÇÃO'){return `<div class="page-head"><div><p class="eyebrow">${eyebrow}</p><h1 tabindex="-1">${title}</h1><p class="subtitle">${sub}</p></div>${action}</div>`;}
@@ -85,7 +116,6 @@ document.getElementById('fechar-dialog').onclick=()=>document.getElementById('au
 document.getElementById('sair').onclick=()=>{const d=document.getElementById('aux-dialog');document.getElementById('dialog-title').textContent='Sessão de demonstração encerrada';document.getElementById('dialog-content').innerHTML='<p class="dialog-copy">Este protótipo não autentica usuários reais. Use o botão abaixo para voltar à navegação de demonstração.</p><button id="entrar-demo" class="button primary full-width">Entrar na demonstração</button>';d.showModal();document.getElementById('entrar-demo').onclick=()=>{d.close();navigate('pedidos');};};
 document.getElementById('reiniciar').onclick=()=>{state=seed();draft={channel:'WhatsApp',items:[{sku:'COQ-001',q:1,unit:3990}],selected:'COQ-001',q:1};page=1;persist();navigate('pedidos');toast('Dados fictícios reiniciados.');};
 window.addEventListener('hashchange',()=>{render();window.scrollTo(0,0);document.querySelector('h1')?.focus();});
-const params=new URLSearchParams(location.search);
 if(params.has('captura')){state=seed();draft={channel:'WhatsApp',items:[{sku:'COQ-001',q:1,unit:3990}],selected:'COQ-001',q:1};}
 if(params.get('tela')==='resultado'){if(params.get('estado')==='erro'){draft.q=3;draft.items[0].q=3;state.result={kind:'error',reason:'estoque',sku:'COQ-001',requested:3,available:2};}else{const o={id:1042,channel:'WhatsApp',date:'13/11/2026',status:'novo',items:[{sku:'COQ-001',q:1,unit:3990}]};state.orders.unshift(o);state.stocks['COQ-001']=1;state.result={kind:'created',id:1042};}}
 render(params.get('tela')||location.hash.slice(1)||'pedidos');
