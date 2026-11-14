@@ -18,6 +18,8 @@ Acesse `http://127.0.0.1:8765/`. Para encerrar o servidor, use Ctrl+C.
 
 ## Dados salvos e capturas
 
+As regras de validação do estado, cálculo de totais e identificação dos pedidos ficam em `order-rules.js`, sem acesso ao DOM ou ao armazenamento. O arquivo `app.js` cuida da navegação, das telas e da persistência. Os scripts são carregados nessa ordem, mantendo a abertura direta de `index.html`.
+
 A navegação normal salva os dados fictícios no armazenamento local do navegador. Ao reabrir a página, o protótipo valida os pedidos e saldos. Dados inválidos fazem a demonstração voltar ao estado inicial. Se o navegador bloquear o armazenamento, a navegação continua em memória, sem garantia de manter as alterações após recarregar.
 
 Para preparar capturas com dados iniciais, abra `index.html?captura=1`. Os parâmetros `tela=novo`, `tela=resultado` e `tela=resultado&estado=erro` permitem abrir os estados da demonstração. Testes e páginas com `captura`, `teste` ou `tela` trabalham em memória e não alteram os dados salvos da navegação normal.
@@ -33,6 +35,8 @@ npm ci
 npx playwright install chromium
 npm test
 ```
+
+O comando executa primeiro os testes unitários das regras, sem navegador, e depois as verificações de interface e armazenamento com Chromium. Para executar somente os testes unitários, use `npm run test:unit`.
 
 Em Linux, se faltarem bibliotecas do sistema, use `npx playwright install --with-deps chromium`. O executor inicia e encerra seu próprio servidor local. O processo retorna código diferente de zero se alguma verificação falhar e salva o relatório em `test-results/verificacao.json`. Para atualizar o relatório versionado, execute `npm run test:report` depois de instalar as dependências.
 

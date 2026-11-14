@@ -8,7 +8,7 @@ import { chromium } from 'playwright';
 const root=fileURLToPath(new URL('../',import.meta.url));
 const reportPath=resolve(root,process.argv.includes('--update-report')?'verificacao.json':'test-results/verificacao.json');
 const report={executedAt:new Date().toISOString(),success:false,viewports:[],regressions:[]};
-const files={'/index.html':'text/html','/checks-host.html':'text/html','/app.js':'text/javascript','/checks.js':'text/javascript','/style.css':'text/css'};
+const files={'/index.html':'text/html','/checks-host.html':'text/html','/order-rules.js':'text/javascript','/app.js':'text/javascript','/checks.js':'text/javascript','/style.css':'text/css'};
 const server=createServer(async(req,res)=>{
   const path=new URL(req.url,'http://localhost').pathname;
   const file=path==='/'?'/index.html':path;

@@ -10,30 +10,11 @@ const params=new URLSearchParams(location.search);
 const isolated=params.has('teste')||params.has('captura')||params.has('tela');
 function seed(){return {stocks:{'COQ-001':2,'CAT-001':8},orders:Array.from({length:40},(_,i)=>({id:1041-i,channel:channels[(i+1)%4],date:i<4?'13/11/2026':'12/11/2026',status:i===0?'enviado':['novo','separado','enviado'][i%3],items:[{sku:'COQ-001',q:1,unit:3990}]})),result:null};}
 let state;
-function validDate(value){
-  if(typeof value!=='string'||!/^\d{2}\/\d{2}\/\d{4}$/.test(value))return false;
-  const [day,month,year]=value.split('/').map(Number),date=new Date(year,month-1,day);
-  return date.getFullYear()===year&&date.getMonth()===month-1&&date.getDate()===day;
-}
-function validState(value){
-  if(!value||typeof value!=='object'||!value.stocks||typeof value.stocks!=='object'||Array.isArray(value.stocks)||!Array.isArray(value.orders))return false;
-  if(!products.every(p=>Number.isSafeInteger(value.stocks[p.sku])&&value.stocks[p.sku]>=0))return false;
-  const ids=new Set();
-  return value.orders.every(o=>{
-    if(!o||!Number.isSafeInteger(o.id)||o.id<1||o.id>=Number.MAX_SAFE_INTEGER||ids.has(o.id)||!channels.includes(o.channel)||!Object.hasOwn(names,o.status)||!validDate(o.date)||!Array.isArray(o.items)||!o.items.length)return false;
-    ids.add(o.id);
-    const skus=new Set();
-    return o.items.every(i=>{
-      if(!i||!products.some(p=>p.sku===i.sku)||skus.has(i.sku)||!Number.isSafeInteger(i.q)||i.q<1||!Number.isSafeInteger(i.unit)||i.unit<0||!Number.isSafeInteger(i.q*i.unit))return false;
-      skus.add(i.sku);return true;
-    })&&Number.isSafeInteger(o.items.reduce((sum,i)=>sum+i.q*i.unit,0));
-  });
-}
 function loadState(){
   if(isolated)return seed();
   try{
     const saved=JSON.parse(localStorage.getItem(storageKey));
-    if(!validState(saved))return seed();
+    if(!OffOrderRules.validState(saved,{products,channels,statuses:names}))return seed();
     const result=saved.result;
     saved.result=result&&['created','existing'].includes(result.kind)&&saved.orders.some(o=>o.id===result.id)?{kind:result.kind,id:result.id}:null;
     return saved;
@@ -44,7 +25,7 @@ let draft={channel:'WhatsApp',items:[{sku:'COQ-001',q:1,unit:3990}],selected:'CO
 let page=1;
 const app=document.getElementById('app');
 const product=sku=>products.find(p=>p.sku===sku);
-const total=items=>items.reduce((sum,i)=>sum+i.q*i.unit,0);
+const total=OffOrderRules.total;
 const badge=status=>`<span class="badge ${esc(status)}"><span aria-hidden="true">${symbols[status]}</span>${names[status]}</span>`;
 const persist=()=>{if(isolated)return;try{localStorage.setItem(storageKey,JSON.stringify(state));}catch{}};
 function toast(text){const el=document.getElementById('toast');el.textContent=text;el.hidden=false;setTimeout(()=>el.hidden=true,2200);}
@@ -90,7 +71,7 @@ function register(){
   if(!channels.includes(draft.channel)){showError('canal');return false;}
   if(!draft.items.length){showError('vazio');return false;}
   for(const i of draft.items){if(!product(i.sku)||!Number.isInteger(i.q)||i.q<1){showError('quantidade',i.sku);return false;}if(i.q>state.stocks[i.sku]){showError('estoque',i.sku);return false;}}
-  const order={id:state.orders.reduce((max,o)=>Math.max(max,o.id),0)+1,channel:draft.channel,date:new Date().toLocaleDateString('pt-BR'),status:'novo',items:draft.items.map(i=>({...i,unit:product(i.sku).price}))};
+  const order={id:OffOrderRules.nextOrderId(state.orders),channel:draft.channel,date:new Date().toLocaleDateString('pt-BR'),status:'novo',items:draft.items.map(i=>({...i,unit:product(i.sku).price}))};
   for(const i of order.items)state.stocks[i.sku]-=i.q;
   state.orders.unshift(order);state.result={kind:'created',id:order.id};persist();navigate('resultado');return true;
 }
