@@ -1,0 +1,36 @@
+name: Verificações do protótipo
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  testes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Instalar dependências de teste
+        run: npm ci
+      - name: Instalar Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Executar verificações
+        run: npm test
+      - name: Salvar relatório
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: verificacao-prototipo
+          path: test-results/verificacao.json
+          if-no-files-found: warn
+          retention-days: 14

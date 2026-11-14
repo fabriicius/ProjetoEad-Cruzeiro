@@ -40,6 +40,22 @@
   document.querySelector('[data-dialog="duvidas"]').click();
   check('Consulta auxiliar de dúvidas abre',document.getElementById('dialog-content').textContent.includes('600 ml'));
   document.getElementById('fechar-dialog').click();
+  api.reset();api.getState().orders=[];api.render('pedidos');
+  check('Lista vazia informa zero pedidos',document.querySelector('.empty')?.textContent==='Nenhum pedido registrado.'&&document.querySelector('.pagination').textContent.includes('Exibindo 0 a 0 de 0 pedidos'));
+  check('Lista vazia mantém paginação válida e desabilitada',document.querySelector('.page-label').textContent==='1 / 1'&&document.getElementById('anterior').disabled&&document.getElementById('proxima').disabled);
+  check('Primeiro pedido recebe identificador válido',api.register()===true&&api.getState().orders[0].id===1);
+  check('Novo pedido usa a data atual',api.getState().orders[0].date===new Date().toLocaleDateString('pt-BR'));
+  api.reset();api.render('pedidos');document.getElementById('proxima').click();
+  api.getState().orders=[];api.render('pedidos');
+  check('Paginação retorna à primeira página após esvaziar lista',document.querySelector('.page-label').textContent==='1 / 1');
+  api.reset();api.getDraft().items.push({sku:'CAT-001',q:2,unit:11990});
+  check('Pedido com dois produtos é registrado',api.register()===true&&api.getState().orders[0].items.length===2);
+  api.render('resultado');
+  const balances=()=>[...document.querySelectorAll('.stock-update p')].map(p=>p.textContent);
+  const expectedBalances=['Coqueteleira OFF 600 ml: 1 unidade(s)','Catalyze Pro 300 g: 6 unidade(s)'];
+  check('Resultado mostra o saldo de todos os produtos',JSON.stringify(balances())===JSON.stringify(expectedBalances));
+  document.getElementById('advance-status').click();
+  check('Mudança de status preserva ambos os saldos',JSON.stringify(balances())===JSON.stringify(expectedBalances));
   const layouts=[];
   for(const route of ['pedidos','novo','resultado']){
    if(route==='resultado'){api.reset();api.register();}

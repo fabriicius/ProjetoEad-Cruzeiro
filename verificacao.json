@@ -1,377 +1,556 @@
-[
-  {
-    "requestedWidth": 1440,
-    "success": true,
-    "results": [
-      {
-        "name": "Paginação: vinte registros na primeira página",
-        "passed": true
-      },
-      {
-        "name": "Navegação para a segunda página",
-        "passed": true
-      },
-      {
-        "name": "Campos com rótulos associados",
-        "passed": true
-      },
-      {
-        "name": "Rejeição de quantidade acima do saldo",
-        "passed": true
-      },
-      {
-        "name": "Erro não altera estoque nem cria pedido",
-        "passed": true
-      },
-      {
-        "name": "Erro informa disponibilidade e como corrigir",
-        "passed": true
-      },
-      {
-        "name": "Dados preservados ao retornar à correção",
-        "passed": true
-      },
-      {
-        "name": "Pedido válido confirmado",
-        "passed": true
-      },
-      {
-        "name": "Preço e baixa corretos",
-        "passed": true
-      },
-      {
-        "name": "Novo avança para separado sem baixa adicional",
-        "passed": true
-      },
-      {
-        "name": "Separado avança para enviado sem baixa adicional",
-        "passed": true
-      },
-      {
-        "name": "Quantidade zero recusada",
-        "passed": true
-      },
-      {
-        "name": "Quantidade fracionada recusada",
-        "passed": true
-      },
-      {
-        "name": "Pedido vazio recusado",
-        "passed": true
-      },
-      {
-        "name": "Falha no segundo item não altera o primeiro saldo",
-        "passed": true
-      },
-      {
-        "name": "Adicionar produto existente não duplica a linha",
-        "passed": true
-      },
-      {
-        "name": "Consulta auxiliar de produtos abre",
-        "passed": true
-      },
-      {
-        "name": "Consulta auxiliar de dúvidas abre",
-        "passed": true
-      },
-      {
-        "name": "Sem transbordamento horizontal: pedidos",
-        "passed": true
-      },
-      {
-        "name": "Alvos de toque de ao menos 44 px: pedidos",
-        "passed": true
-      },
-      {
-        "name": "Sem transbordamento horizontal: novo",
-        "passed": true
-      },
-      {
-        "name": "Alvos de toque de ao menos 44 px: novo",
-        "passed": true
-      },
-      {
-        "name": "Sem transbordamento horizontal: resultado",
-        "passed": true
-      },
-      {
-        "name": "Alvos de toque de ao menos 44 px: resultado",
-        "passed": true
-      }
-    ],
-    "layouts": [
-      {
-        "route": "pedidos",
-        "viewport": 1440,
-        "content": 1440,
-        "scrollHeight": 1000,
-        "bodyHeight": 1000
-      },
-      {
-        "route": "novo",
-        "viewport": 1440,
-        "content": 1425,
-        "scrollHeight": 1008,
-        "bodyHeight": 1000
-      },
-      {
-        "route": "resultado",
-        "viewport": 1440,
-        "content": 1440,
-        "scrollHeight": 1000,
-        "bodyHeight": 1000
-      }
-    ]
-  },
-  {
-    "requestedWidth": 390,
-    "success": true,
-    "results": [
-      {
-        "name": "Paginação: vinte registros na primeira página",
-        "passed": true
-      },
-      {
-        "name": "Navegação para a segunda página",
-        "passed": true
-      },
-      {
-        "name": "Campos com rótulos associados",
-        "passed": true
-      },
-      {
-        "name": "Rejeição de quantidade acima do saldo",
-        "passed": true
-      },
-      {
-        "name": "Erro não altera estoque nem cria pedido",
-        "passed": true
-      },
-      {
-        "name": "Erro informa disponibilidade e como corrigir",
-        "passed": true
-      },
-      {
-        "name": "Dados preservados ao retornar à correção",
-        "passed": true
-      },
-      {
-        "name": "Pedido válido confirmado",
-        "passed": true
-      },
-      {
-        "name": "Preço e baixa corretos",
-        "passed": true
-      },
-      {
-        "name": "Novo avança para separado sem baixa adicional",
-        "passed": true
-      },
-      {
-        "name": "Separado avança para enviado sem baixa adicional",
-        "passed": true
-      },
-      {
-        "name": "Quantidade zero recusada",
-        "passed": true
-      },
-      {
-        "name": "Quantidade fracionada recusada",
-        "passed": true
-      },
-      {
-        "name": "Pedido vazio recusado",
-        "passed": true
-      },
-      {
-        "name": "Falha no segundo item não altera o primeiro saldo",
-        "passed": true
-      },
-      {
-        "name": "Adicionar produto existente não duplica a linha",
-        "passed": true
-      },
-      {
-        "name": "Consulta auxiliar de produtos abre",
-        "passed": true
-      },
-      {
-        "name": "Consulta auxiliar de dúvidas abre",
-        "passed": true
-      },
-      {
-        "name": "Sem transbordamento horizontal: pedidos",
-        "passed": true
-      },
-      {
-        "name": "Alvos de toque de ao menos 44 px: pedidos",
-        "passed": true
-      },
-      {
-        "name": "Sem transbordamento horizontal: novo",
-        "passed": true
-      },
-      {
-        "name": "Alvos de toque de ao menos 44 px: novo",
-        "passed": true
-      },
-      {
-        "name": "Sem transbordamento horizontal: resultado",
-        "passed": true
-      },
-      {
-        "name": "Alvos de toque de ao menos 44 px: resultado",
-        "passed": true
-      }
-    ],
-    "layouts": [
-      {
-        "route": "pedidos",
-        "viewport": 390,
-        "content": 375,
-        "scrollHeight": 3833,
-        "bodyHeight": 1000
-      },
-      {
-        "route": "novo",
-        "viewport": 390,
-        "content": 375,
-        "scrollHeight": 1735,
-        "bodyHeight": 1000
-      },
-      {
-        "route": "resultado",
-        "viewport": 390,
-        "content": 375,
-        "scrollHeight": 1727,
-        "bodyHeight": 1000
-      }
-    ]
-  },
-  {
-    "requestedWidth": 320,
-    "success": true,
-    "results": [
-      {
-        "name": "Paginação: vinte registros na primeira página",
-        "passed": true
-      },
-      {
-        "name": "Navegação para a segunda página",
-        "passed": true
-      },
-      {
-        "name": "Campos com rótulos associados",
-        "passed": true
-      },
-      {
-        "name": "Rejeição de quantidade acima do saldo",
-        "passed": true
-      },
-      {
-        "name": "Erro não altera estoque nem cria pedido",
-        "passed": true
-      },
-      {
-        "name": "Erro informa disponibilidade e como corrigir",
-        "passed": true
-      },
-      {
-        "name": "Dados preservados ao retornar à correção",
-        "passed": true
-      },
-      {
-        "name": "Pedido válido confirmado",
-        "passed": true
-      },
-      {
-        "name": "Preço e baixa corretos",
-        "passed": true
-      },
-      {
-        "name": "Novo avança para separado sem baixa adicional",
-        "passed": true
-      },
-      {
-        "name": "Separado avança para enviado sem baixa adicional",
-        "passed": true
-      },
-      {
-        "name": "Quantidade zero recusada",
-        "passed": true
-      },
-      {
-        "name": "Quantidade fracionada recusada",
-        "passed": true
-      },
-      {
-        "name": "Pedido vazio recusado",
-        "passed": true
-      },
-      {
-        "name": "Falha no segundo item não altera o primeiro saldo",
-        "passed": true
-      },
-      {
-        "name": "Adicionar produto existente não duplica a linha",
-        "passed": true
-      },
-      {
-        "name": "Consulta auxiliar de produtos abre",
-        "passed": true
-      },
-      {
-        "name": "Consulta auxiliar de dúvidas abre",
-        "passed": true
-      },
-      {
-        "name": "Sem transbordamento horizontal: pedidos",
-        "passed": true
-      },
-      {
-        "name": "Alvos de toque de ao menos 44 px: pedidos",
-        "passed": true
-      },
-      {
-        "name": "Sem transbordamento horizontal: novo",
-        "passed": true
-      },
-      {
-        "name": "Alvos de toque de ao menos 44 px: novo",
-        "passed": true
-      },
-      {
-        "name": "Sem transbordamento horizontal: resultado",
-        "passed": true
-      },
-      {
-        "name": "Alvos de toque de ao menos 44 px: resultado",
-        "passed": true
-      }
-    ],
-    "layouts": [
-      {
-        "route": "pedidos",
-        "viewport": 320,
-        "content": 305,
-        "scrollHeight": 3870,
-        "bodyHeight": 1000
-      },
-      {
-        "route": "novo",
-        "viewport": 320,
-        "content": 305,
-        "scrollHeight": 1797,
-        "bodyHeight": 1000
-      },
-      {
-        "route": "resultado",
-        "viewport": 320,
-        "content": 305,
-        "scrollHeight": 1820,
-        "bodyHeight": 1000
-      }
-    ]
-  }
-]
+{
+  "executedAt": "2026-11-14T00:18:05.619Z",
+  "success": true,
+  "viewports": [
+    {
+      "requestedWidth": 1440,
+      "success": true,
+      "results": [
+        {
+          "name": "Paginação: vinte registros na primeira página",
+          "passed": true
+        },
+        {
+          "name": "Navegação para a segunda página",
+          "passed": true
+        },
+        {
+          "name": "Campos com rótulos associados",
+          "passed": true
+        },
+        {
+          "name": "Rejeição de quantidade acima do saldo",
+          "passed": true
+        },
+        {
+          "name": "Erro não altera estoque nem cria pedido",
+          "passed": true
+        },
+        {
+          "name": "Erro informa disponibilidade e como corrigir",
+          "passed": true
+        },
+        {
+          "name": "Dados preservados ao retornar à correção",
+          "passed": true
+        },
+        {
+          "name": "Pedido válido confirmado",
+          "passed": true
+        },
+        {
+          "name": "Preço e baixa corretos",
+          "passed": true
+        },
+        {
+          "name": "Novo avança para separado sem baixa adicional",
+          "passed": true
+        },
+        {
+          "name": "Separado avança para enviado sem baixa adicional",
+          "passed": true
+        },
+        {
+          "name": "Quantidade zero recusada",
+          "passed": true
+        },
+        {
+          "name": "Quantidade fracionada recusada",
+          "passed": true
+        },
+        {
+          "name": "Pedido vazio recusado",
+          "passed": true
+        },
+        {
+          "name": "Falha no segundo item não altera o primeiro saldo",
+          "passed": true
+        },
+        {
+          "name": "Adicionar produto existente não duplica a linha",
+          "passed": true
+        },
+        {
+          "name": "Consulta auxiliar de produtos abre",
+          "passed": true
+        },
+        {
+          "name": "Consulta auxiliar de dúvidas abre",
+          "passed": true
+        },
+        {
+          "name": "Lista vazia informa zero pedidos",
+          "passed": true
+        },
+        {
+          "name": "Lista vazia mantém paginação válida e desabilitada",
+          "passed": true
+        },
+        {
+          "name": "Primeiro pedido recebe identificador válido",
+          "passed": true
+        },
+        {
+          "name": "Novo pedido usa a data atual",
+          "passed": true
+        },
+        {
+          "name": "Paginação retorna à primeira página após esvaziar lista",
+          "passed": true
+        },
+        {
+          "name": "Pedido com dois produtos é registrado",
+          "passed": true
+        },
+        {
+          "name": "Resultado mostra o saldo de todos os produtos",
+          "passed": true
+        },
+        {
+          "name": "Mudança de status preserva ambos os saldos",
+          "passed": true
+        },
+        {
+          "name": "Sem transbordamento horizontal: pedidos",
+          "passed": true
+        },
+        {
+          "name": "Alvos de toque de ao menos 44 px: pedidos",
+          "passed": true
+        },
+        {
+          "name": "Sem transbordamento horizontal: novo",
+          "passed": true
+        },
+        {
+          "name": "Alvos de toque de ao menos 44 px: novo",
+          "passed": true
+        },
+        {
+          "name": "Sem transbordamento horizontal: resultado",
+          "passed": true
+        },
+        {
+          "name": "Alvos de toque de ao menos 44 px: resultado",
+          "passed": true
+        }
+      ],
+      "layouts": [
+        {
+          "route": "pedidos",
+          "viewport": 1440,
+          "content": 1440,
+          "scrollHeight": 1000,
+          "bodyHeight": 1000
+        },
+        {
+          "route": "novo",
+          "viewport": 1440,
+          "content": 1440,
+          "scrollHeight": 1085,
+          "bodyHeight": 1000
+        },
+        {
+          "route": "resultado",
+          "viewport": 1440,
+          "content": 1440,
+          "scrollHeight": 1000,
+          "bodyHeight": 1000
+        }
+      ]
+    },
+    {
+      "requestedWidth": 390,
+      "success": true,
+      "results": [
+        {
+          "name": "Paginação: vinte registros na primeira página",
+          "passed": true
+        },
+        {
+          "name": "Navegação para a segunda página",
+          "passed": true
+        },
+        {
+          "name": "Campos com rótulos associados",
+          "passed": true
+        },
+        {
+          "name": "Rejeição de quantidade acima do saldo",
+          "passed": true
+        },
+        {
+          "name": "Erro não altera estoque nem cria pedido",
+          "passed": true
+        },
+        {
+          "name": "Erro informa disponibilidade e como corrigir",
+          "passed": true
+        },
+        {
+          "name": "Dados preservados ao retornar à correção",
+          "passed": true
+        },
+        {
+          "name": "Pedido válido confirmado",
+          "passed": true
+        },
+        {
+          "name": "Preço e baixa corretos",
+          "passed": true
+        },
+        {
+          "name": "Novo avança para separado sem baixa adicional",
+          "passed": true
+        },
+        {
+          "name": "Separado avança para enviado sem baixa adicional",
+          "passed": true
+        },
+        {
+          "name": "Quantidade zero recusada",
+          "passed": true
+        },
+        {
+          "name": "Quantidade fracionada recusada",
+          "passed": true
+        },
+        {
+          "name": "Pedido vazio recusado",
+          "passed": true
+        },
+        {
+          "name": "Falha no segundo item não altera o primeiro saldo",
+          "passed": true
+        },
+        {
+          "name": "Adicionar produto existente não duplica a linha",
+          "passed": true
+        },
+        {
+          "name": "Consulta auxiliar de produtos abre",
+          "passed": true
+        },
+        {
+          "name": "Consulta auxiliar de dúvidas abre",
+          "passed": true
+        },
+        {
+          "name": "Lista vazia informa zero pedidos",
+          "passed": true
+        },
+        {
+          "name": "Lista vazia mantém paginação válida e desabilitada",
+          "passed": true
+        },
+        {
+          "name": "Primeiro pedido recebe identificador válido",
+          "passed": true
+        },
+        {
+          "name": "Novo pedido usa a data atual",
+          "passed": true
+        },
+        {
+          "name": "Paginação retorna à primeira página após esvaziar lista",
+          "passed": true
+        },
+        {
+          "name": "Pedido com dois produtos é registrado",
+          "passed": true
+        },
+        {
+          "name": "Resultado mostra o saldo de todos os produtos",
+          "passed": true
+        },
+        {
+          "name": "Mudança de status preserva ambos os saldos",
+          "passed": true
+        },
+        {
+          "name": "Sem transbordamento horizontal: pedidos",
+          "passed": true
+        },
+        {
+          "name": "Alvos de toque de ao menos 44 px: pedidos",
+          "passed": true
+        },
+        {
+          "name": "Sem transbordamento horizontal: novo",
+          "passed": true
+        },
+        {
+          "name": "Alvos de toque de ao menos 44 px: novo",
+          "passed": true
+        },
+        {
+          "name": "Sem transbordamento horizontal: resultado",
+          "passed": true
+        },
+        {
+          "name": "Alvos de toque de ao menos 44 px: resultado",
+          "passed": true
+        }
+      ],
+      "layouts": [
+        {
+          "route": "pedidos",
+          "viewport": 390,
+          "content": 390,
+          "scrollHeight": 3833,
+          "bodyHeight": 1000
+        },
+        {
+          "route": "novo",
+          "viewport": 390,
+          "content": 390,
+          "scrollHeight": 1812,
+          "bodyHeight": 1000
+        },
+        {
+          "route": "resultado",
+          "viewport": 390,
+          "content": 390,
+          "scrollHeight": 1727,
+          "bodyHeight": 1000
+        }
+      ]
+    },
+    {
+      "requestedWidth": 320,
+      "success": true,
+      "results": [
+        {
+          "name": "Paginação: vinte registros na primeira página",
+          "passed": true
+        },
+        {
+          "name": "Navegação para a segunda página",
+          "passed": true
+        },
+        {
+          "name": "Campos com rótulos associados",
+          "passed": true
+        },
+        {
+          "name": "Rejeição de quantidade acima do saldo",
+          "passed": true
+        },
+        {
+          "name": "Erro não altera estoque nem cria pedido",
+          "passed": true
+        },
+        {
+          "name": "Erro informa disponibilidade e como corrigir",
+          "passed": true
+        },
+        {
+          "name": "Dados preservados ao retornar à correção",
+          "passed": true
+        },
+        {
+          "name": "Pedido válido confirmado",
+          "passed": true
+        },
+        {
+          "name": "Preço e baixa corretos",
+          "passed": true
+        },
+        {
+          "name": "Novo avança para separado sem baixa adicional",
+          "passed": true
+        },
+        {
+          "name": "Separado avança para enviado sem baixa adicional",
+          "passed": true
+        },
+        {
+          "name": "Quantidade zero recusada",
+          "passed": true
+        },
+        {
+          "name": "Quantidade fracionada recusada",
+          "passed": true
+        },
+        {
+          "name": "Pedido vazio recusado",
+          "passed": true
+        },
+        {
+          "name": "Falha no segundo item não altera o primeiro saldo",
+          "passed": true
+        },
+        {
+          "name": "Adicionar produto existente não duplica a linha",
+          "passed": true
+        },
+        {
+          "name": "Consulta auxiliar de produtos abre",
+          "passed": true
+        },
+        {
+          "name": "Consulta auxiliar de dúvidas abre",
+          "passed": true
+        },
+        {
+          "name": "Lista vazia informa zero pedidos",
+          "passed": true
+        },
+        {
+          "name": "Lista vazia mantém paginação válida e desabilitada",
+          "passed": true
+        },
+        {
+          "name": "Primeiro pedido recebe identificador válido",
+          "passed": true
+        },
+        {
+          "name": "Novo pedido usa a data atual",
+          "passed": true
+        },
+        {
+          "name": "Paginação retorna à primeira página após esvaziar lista",
+          "passed": true
+        },
+        {
+          "name": "Pedido com dois produtos é registrado",
+          "passed": true
+        },
+        {
+          "name": "Resultado mostra o saldo de todos os produtos",
+          "passed": true
+        },
+        {
+          "name": "Mudança de status preserva ambos os saldos",
+          "passed": true
+        },
+        {
+          "name": "Sem transbordamento horizontal: pedidos",
+          "passed": true
+        },
+        {
+          "name": "Alvos de toque de ao menos 44 px: pedidos",
+          "passed": true
+        },
+        {
+          "name": "Sem transbordamento horizontal: novo",
+          "passed": true
+        },
+        {
+          "name": "Alvos de toque de ao menos 44 px: novo",
+          "passed": true
+        },
+        {
+          "name": "Sem transbordamento horizontal: resultado",
+          "passed": true
+        },
+        {
+          "name": "Alvos de toque de ao menos 44 px: resultado",
+          "passed": true
+        }
+      ],
+      "layouts": [
+        {
+          "route": "pedidos",
+          "viewport": 320,
+          "content": 320,
+          "scrollHeight": 3853,
+          "bodyHeight": 1000
+        },
+        {
+          "route": "novo",
+          "viewport": 320,
+          "content": 320,
+          "scrollHeight": 1858,
+          "bodyHeight": 1000
+        },
+        {
+          "route": "resultado",
+          "viewport": 320,
+          "content": 320,
+          "scrollHeight": 1820,
+          "bodyHeight": 1000
+        }
+      ]
+    }
+  ],
+  "regressions": [
+    {
+      "name": "Restaura pedidos e saldos válidos após recarregar",
+      "passed": true
+    },
+    {
+      "name": "Registra a data do navegador em vez da data fixa da demonstração",
+      "passed": true
+    },
+    {
+      "name": "Preserva armazenamento da demonstração em ?captura=1",
+      "passed": true
+    },
+    {
+      "name": "Preserva armazenamento da demonstração em ?tela=resultado",
+      "passed": true
+    },
+    {
+      "name": "Preserva armazenamento da demonstração em ?teste=1",
+      "passed": true
+    },
+    {
+      "name": "Recupera demonstração com JSON incompleto",
+      "passed": true
+    },
+    {
+      "name": "Recupera demonstração com saldo negativo",
+      "passed": true
+    },
+    {
+      "name": "Recupera demonstração com saldo ausente",
+      "passed": true
+    },
+    {
+      "name": "Recupera demonstração com pedidos fora de uma lista",
+      "passed": true
+    },
+    {
+      "name": "Recupera demonstração com produto desconhecido",
+      "passed": true
+    },
+    {
+      "name": "Recupera demonstração com status desconhecido",
+      "passed": true
+    },
+    {
+      "name": "Recupera demonstração com quantidade inválida",
+      "passed": true
+    },
+    {
+      "name": "Recupera demonstração com preço inválido",
+      "passed": true
+    },
+    {
+      "name": "Recupera demonstração com data inexistente",
+      "passed": true
+    },
+    {
+      "name": "Recupera demonstração com identificadores repetidos",
+      "passed": true
+    },
+    {
+      "name": "Recupera demonstração com pedido sem itens",
+      "passed": true
+    },
+    {
+      "name": "Restaura lista vazia válida e persiste o primeiro pedido",
+      "passed": true
+    },
+    {
+      "name": "Funciona quando o navegador bloqueia o armazenamento local",
+      "passed": true
+    },
+    {
+      "name": "Host informa tempo limite se os testes não carregarem",
+      "passed": true
+    }
+  ],
+  "browserVersion": "159.0.8154.6"
+}

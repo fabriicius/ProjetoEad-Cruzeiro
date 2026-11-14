@@ -1,0 +1,12 @@
+{
+  "name": "off-nutrition-lab-prototipo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Protótipo local de pedidos e estoque da OFF Nutrition Lab",
+  "scripts": {
+    "test": "node scripts/run-checks.mjs",
+    "test:report": "node scripts/run-checks.mjs --update-report"
+  },
+  "engines": { "node": ">=22" },
+  "devDependencies": { "playwright": "1.65.1" }
+}

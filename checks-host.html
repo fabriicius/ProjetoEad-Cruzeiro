@@ -1,5 +1,23 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>Verificação do protótipo</title></head><body><script>
-const width=Number(new URLSearchParams(location.search).get('width'))||320;
-const frame=document.createElement('iframe');frame.width=width;frame.height=1000;frame.style.border='0';frame.src='index.html?captura=1&teste=1';document.body.appendChild(frame);
-const timer=setInterval(()=>{const result=frame.contentWindow?.OFF_CHECKS;if(result){clearInterval(timer);const pre=document.createElement('pre');pre.id='test-results';pre.textContent=JSON.stringify(result);document.body.appendChild(pre);}},100);
-</script></body></html>
+<!doctype html>
+<html lang="pt-BR">
+<head><meta charset="utf-8"><title>Verificação do protótipo</title></head>
+<body><script>
+const requestedWidth=Number(new URLSearchParams(location.search).get('width'));
+const width=Number.isInteger(requestedWidth)&&requestedWidth>=320&&requestedWidth<=1920?requestedWidth:320;
+const frame=document.createElement('iframe');
+frame.title='Protótipo em teste';frame.width=width;frame.height=1000;frame.style.border='0';
+let finished=false,timer,deadline;
+function finish(result){
+  if(finished)return;
+  finished=true;clearInterval(timer);clearTimeout(deadline);
+  const pre=document.createElement('pre');pre.id='test-results';pre.textContent=JSON.stringify(result);document.body.appendChild(pre);
+}
+frame.addEventListener('error',()=>finish({success:false,error:'Não foi possível carregar o protótipo.'}));
+timer=setInterval(()=>{
+  try{const result=frame.contentWindow?.OFF_CHECKS;if(result)finish(result);}
+  catch(error){finish({success:false,error:error.message});}
+},100);
+deadline=setTimeout(()=>finish({success:false,error:'Tempo limite de 10 segundos excedido ao executar os testes.'}),10000);
+frame.src='index.html?captura=1&teste=1';document.body.appendChild(frame);
+</script></body>
+</html>
