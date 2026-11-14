@@ -24,13 +24,17 @@ jobs:
         run: npm ci
       - name: Instalar Chromium
         run: npx playwright install --with-deps chromium
-      - name: Executar verificações
-        run: npm test
-      - name: Salvar relatório
+      - name: Executar testes e medir cobertura
+        run: npm run test:coverage
+      - name: Salvar relatórios de testes e cobertura
         if: always()
         uses: actions/upload-artifact@v5
         with:
           name: verificacao-prototipo
-          path: test-results/verificacao.json
+          path: |
+            test-results/verificacao.json
+            coverage/
+            !coverage/browser-v8.json
+            !coverage/node-*/**
           if-no-files-found: warn
           retention-days: 14

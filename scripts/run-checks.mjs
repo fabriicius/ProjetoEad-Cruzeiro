@@ -4,8 +4,12 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { chromium } from 'playwright';
+import { BrowserCoverage } from './coverage.mjs';
 
 const root=fileURLToPath(new URL('../',import.meta.url));
+const started=performance.now();
+const coverage=process.argv.includes('--coverage')?new BrowserCoverage():null;
+async function newPage(context){const page=await context.newPage();if(coverage)await coverage.track(page);return page;}
 const reportPath=resolve(root,process.argv.includes('--update-report')?'verificacao.json':'test-results/verificacao.json');
 const report={executedAt:new Date().toISOString(),success:false,viewports:[],regressions:[]};
 const files={'/index.html':'text/html','/checks-host.html':'text/html','/order-rules.js':'text/javascript','/app.js':'text/javascript','/checks.js':'text/javascript','/style.css':'text/css'};
@@ -31,7 +35,7 @@ async function run(){
   const context=await browser.newContext({locale:'pt-BR',timezoneId:'America/Sao_Paulo'});
   context.setDefaultTimeout(15000);
   await check('Abertura direta do HTML carrega regras e interface',async()=>{
-    const local=await context.newPage();
+    const local=await newPage(context);
     try{
       await local.goto(pathToFileURL(resolve(root,'index.html')).href+'?captura=1');
       assert.equal(await local.locator('tbody tr').count(),20);
@@ -39,7 +43,7 @@ async function run(){
     }finally{await local.close();}
   });
   for(const width of [1440,390,320]){
-    const page=await context.newPage(),errors=[];
+    const page=await newPage(context),errors=[];
     page.on('pageerror',error=>errors.push(error.message));
     await page.setViewportSize({width:Math.max(1440,width+40),height:1100});
     await page.goto(`${base}/checks-host.html?width=${width}`);
@@ -53,7 +57,7 @@ async function run(){
     await page.close();
   }
 
-  const page=await context.newPage();
+  const page=await newPage(context);
   await page.clock.install({time:new Date('2027-01-02T15:00:00-03:00')});
   await page.goto(base);
   const saved=await page.evaluate(()=>{
@@ -120,12 +124,12 @@ async function run(){
         Storage.prototype.getItem=()=>{throw new Error('Armazenamento bloqueado');};
         Storage.prototype.setItem=()=>{throw new Error('Armazenamento bloqueado');};
       });
-      const p=await blocked.newPage();await p.goto(base);
+      const p=await newPage(blocked);await p.goto(base);
       assert.equal(await p.evaluate(()=>OffDemo.register()),true);
-    }finally{await blocked.close();}
+    }finally{if(coverage)await coverage.flushContext(blocked);await blocked.close();}
   });
   await check('Host informa tempo limite se os testes não carregarem',async()=>{
-    const p=await context.newPage();
+    const p=await newPage(context);
     try{
       await p.route('**/checks.js',route=>route.abort());
       await p.goto(`${base}/checks-host.html?width=320`);
@@ -141,9 +145,13 @@ try{
 }catch(error){report.error=error.message;console.error(error);process.exitCode=1;}
 finally{
   clearTimeout(deadline);
+  try{if(coverage)await coverage.save(root);}
+  catch(error){report.success=false;report.error=error.message;process.exitCode=1;console.error(error);}
   if(browser)await browser.close();
   if(server.listening)await new Promise(resolve=>server.close(resolve));
   await mkdir(dirname(reportPath),{recursive:true});
+  report.durationMs=Math.round(performance.now()-started);
   await writeFile(reportPath,JSON.stringify(report,null,2)+'\n');
+  console.log(`${report.success?'PASS':'FAIL'}: integração em ${(report.durationMs/1000).toFixed(2)} segundos.`);
   console.log('Relatório: '+reportPath);
 }

@@ -2,10 +2,12 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import vm from 'node:vm';
+import { fileURLToPath } from 'node:url';
 
 // O módulo deve funcionar sem document, window ou localStorage.
 const sandbox={};
-vm.runInNewContext(readFileSync(new URL('../order-rules.js',import.meta.url),'utf8'),sandbox);
+const rulesFile=fileURLToPath(new URL('../order-rules.js',import.meta.url));
+vm.runInNewContext(readFileSync(rulesFile,'utf8'),sandbox,{filename:rulesFile});
 const rules=sandbox.OffOrderRules;
 const config={products:[{sku:'COQ-001'},{sku:'CAT-001'}],channels:['WhatsApp'],statuses:{novo:'Novo'}};
 const fixture=()=>({stocks:{'COQ-001':2,'CAT-001':8},orders:[{id:1,channel:'WhatsApp',date:'13/11/2026',status:'novo',items:[{sku:'COQ-001',q:1,unit:3990}]}]});

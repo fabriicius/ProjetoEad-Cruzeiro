@@ -40,11 +40,15 @@ npm test
 
 O comando executa primeiro os testes unitários das regras, sem navegador, e depois as verificações de interface e armazenamento com Chromium. Para executar somente os testes unitários, use `npm run test:unit`.
 
+Para medir a cobertura, execute `npm run test:coverage`. O comando reúne as execuções V8 dos testes unitários e dos testes no Chromium, convertidas e consolidadas pelo Istanbul. O escopo é o código JavaScript de produção: `app.js` e `order-rules.js`. Testes, scripts de automação, bibliotecas, HTML e CSS ficam fora desse percentual. Arquivos de produção sem execução também entram no denominador.
+
+O relatório detalhado fica em `coverage/index.html`, o resumo em `coverage/coverage-summary.json` e a medição com escopo, hashes dos fontes e duração em `coverage/measurement.json`. O terminal mostra linhas, funções e ramos separadamente. Como o código contém várias operações na mesma linha, 100% de linhas não implica que todas as funções ou alternativas de decisão foram exercitadas.
+
 Em Linux, se faltarem bibliotecas do sistema, use `npx playwright install --with-deps chromium`. O executor inicia e encerra seu próprio servidor local. O processo retorna código diferente de zero se alguma verificação falhar e salva o relatório em `test-results/verificacao.json`. Para atualizar o relatório versionado, execute `npm run test:report` depois de instalar as dependências.
 
 Se quiser usar um Google Chrome já instalado, execute `PLAYWRIGHT_CHANNEL=chrome npm test`. Essa alternativa não exige o download do Chromium. Node.js e Playwright são usados somente nas verificações; a interface continua sem dependências externas em execução.
 
-O workflow `.github/workflows/verificacoes.yml` executa `npm test` em pushes para `main` e `develop`, em pull requests para `main`, e também pode ser iniciado manualmente. O relatório da execução fica disponível como artefato `verificacao-prototipo` no GitHub Actions por 14 dias. O workflow não altera automaticamente o relatório versionado.
+O workflow `.github/workflows/verificacoes.yml` executa `npm run test:coverage` em pushes para `main` e `develop`, em pull requests para `main`, e também pode ser iniciado manualmente. O resumo da execução mostra aprovação, cobertura e duração. Os relatórios de testes e cobertura ficam disponíveis como artefato `verificacao-prototipo` no GitHub Actions por 14 dias. Os dados brutos do V8 ficam fora desse artefato. O workflow não altera automaticamente o relatório versionado.
 
 `contraste.json` registra o cálculo das combinações principais de texto e fundo, todas acima de 4,5:1. Isso não constitui auditoria completa de acessibilidade. A avaliação com representante externo, a operação em aparelhos reais, o teste integral de teclado, leitor de tela e ampliação de texto ainda deverão ocorrer.
 
