@@ -23,5 +23,28 @@ function validState(value,{products,channels,statuses}){
 
 function total(items){return items.reduce((sum,item)=>sum+item.q*item.unit,0);}
 function nextOrderId(orders){return orders.reduce((max,order)=>Math.max(max,order.id),0)+1;}
-root.OffOrderRules=Object.freeze({validDate,validState,total,nextOrderId});
+function validateOrder(draft,{stocks,products,channels}){
+  if(!draft||!channels.includes(draft.channel))return {error:'canal'};
+  if(!Array.isArray(draft.items)||!draft.items.length)return {error:'vazio'};
+  const skus=new Set(),items=[];
+  let amount=0;
+  for(const item of draft.items){
+    const product=products.find(p=>p.sku===item?.sku);
+    if(!product)return {error:'produto'};
+    const sku=product.sku;
+    if(skus.has(sku))return {error:'duplicado',sku};
+    if(!Number.isSafeInteger(item.q)||item.q<1)return {error:'quantidade',sku};
+    const available=stocks?.[sku];
+    if(!Number.isSafeInteger(available)||available<0)return {error:'saldo',sku};
+    if(item.q>available)return {error:'estoque',sku,requested:item.q,available};
+    if(!Number.isSafeInteger(product.price)||product.price<0||!Number.isSafeInteger(item.q*product.price))return {error:'valor',sku};
+    amount+=item.q*product.price;
+    if(!Number.isSafeInteger(amount))return {error:'valor',sku};
+    skus.add(sku);
+    // Aceita somente os campos previstos e usa o preço do catálogo.
+    items.push({sku,q:item.q,unit:product.price});
+  }
+  return {channel:draft.channel,items};
+}
+root.OffOrderRules=Object.freeze({validDate,validState,total,nextOrderId,validateOrder});
 })(globalThis);

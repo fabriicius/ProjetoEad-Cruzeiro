@@ -40,3 +40,57 @@ test('gera identificador após o maior existente e começa em um na lista vazia'
   assert.equal(rules.nextOrderId([{id:8},{id:3}]),9);
   assert.equal(rules.nextOrderId([]),1);
 });
+
+const orderConfig=()=>({stocks:{'COQ-001':2,'CAT-001':8},products:[{sku:'COQ-001',price:3990},{sku:'CAT-001',price:11990}],channels:['WhatsApp']});
+const draft=()=>({channel:'WhatsApp',items:[{sku:'COQ-001',q:1,unit:1,extra:'campo não permitido'}]});
+
+test('normaliza os itens, usa o preço do catálogo e não modifica a entrada',()=>{
+  const input=draft(),before=JSON.stringify(input);
+  const result=rules.validateOrder(input,orderConfig());
+  assert.deepEqual(JSON.parse(JSON.stringify(result)),{channel:'WhatsApp',items:[{sku:'COQ-001',q:1,unit:3990}]});
+  assert.equal(JSON.stringify(input),before);
+});
+
+test('recusa SKU repetido antes de qualquer baixa de estoque',()=>{
+  const input=draft(),options=orderConfig(),before=JSON.stringify(options.stocks);
+  input.items.push({sku:'COQ-001',q:2});
+  assert.equal(rules.validateOrder(input,options).error,'duplicado');
+  assert.equal(JSON.stringify(options.stocks),before);
+});
+
+test('recusa canal inválido, lista malformada e produto desconhecido',()=>{
+  assert.equal(rules.validateOrder(null,orderConfig()).error,'canal');
+  assert.equal(rules.validateOrder({...draft(),channel:'<script>'},orderConfig()).error,'canal');
+  for(const items of [null,{},[]])assert.equal(rules.validateOrder({...draft(),items},orderConfig()).error,'vazio');
+  for(const item of [null,{sku:'INVALID',q:1}])assert.equal(rules.validateOrder({...draft(),items:[item]},orderConfig()).error,'produto');
+});
+
+test('recusa quantidades não inteiras ou fora da precisão segura',()=>{
+  for(const q of [0,-1,1.5,Infinity,Number.MAX_SAFE_INTEGER+1,'1']){
+    const input=draft();input.items[0].q=q;
+    assert.equal(rules.validateOrder(input,orderConfig()).error,'quantidade');
+  }
+});
+
+test('recusa saldo inválido e informa falta de estoque sem mutação parcial',()=>{
+  for(const available of [-1,undefined,'2',NaN]){
+    const options=orderConfig();options.stocks['COQ-001']=available;
+    assert.equal(rules.validateOrder(draft(),options).error,'saldo');
+  }
+  const input=draft(),options=orderConfig(),before=JSON.stringify(options.stocks);
+  input.items.push({sku:'CAT-001',q:9});
+  const result=rules.validateOrder(input,options);
+  assert.equal(result.error,'estoque');assert.equal(result.available,8);assert.equal(result.requested,9);
+  assert.equal(JSON.stringify(options.stocks),before);
+});
+
+test('recusa preço inválido e totais fora da precisão segura',()=>{
+  const badPrice=orderConfig();badPrice.products[0].price=NaN;
+  assert.equal(rules.validateOrder(draft(),badPrice).error,'valor');
+  const huge=2**52,options=orderConfig();
+  options.products.forEach(p=>{p.price=1;options.stocks[p.sku]=huge;});
+  const input={channel:'WhatsApp',items:[{sku:'COQ-001',q:huge},{sku:'CAT-001',q:huge}]};
+  assert.equal(rules.validateOrder(input,options).error,'valor');
+  options.products[0].price=3990;
+  assert.equal(rules.validateOrder({...draft(),items:[{sku:'COQ-001',q:huge}]},options).error,'valor');
+});

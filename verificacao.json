@@ -1,5 +1,5 @@
 {
-  "executedAt": "2026-11-14T00:18:05.619Z",
+  "executedAt": "2026-11-14T00:39:40.445Z",
   "success": true,
   "viewports": [
     {
@@ -111,6 +111,38 @@
           "passed": true
         },
         {
+          "name": "Produto repetido não cria pedido nem deixa estoque negativo",
+          "passed": true
+        },
+        {
+          "name": "Erro de produto repetido orienta a correção",
+          "passed": true
+        },
+        {
+          "name": "Quantidade fora da precisão segura é recusada",
+          "passed": true
+        },
+        {
+          "name": "Saldo ausente impede o registro",
+          "passed": true
+        },
+        {
+          "name": "Item malformado é recusado sem exceção",
+          "passed": true
+        },
+        {
+          "name": "Lista malformada é recusada sem exceção",
+          "passed": true
+        },
+        {
+          "name": "Canal malicioso é recusado sem inserir HTML",
+          "passed": true
+        },
+        {
+          "name": "Registro usa preço do catálogo e remove campos não previstos",
+          "passed": true
+        },
+        {
           "name": "Sem transbordamento horizontal: pedidos",
           "passed": true
         },
@@ -147,7 +179,7 @@
           "route": "novo",
           "viewport": 1440,
           "content": 1440,
-          "scrollHeight": 1085,
+          "scrollHeight": 1008,
           "bodyHeight": 1000
         },
         {
@@ -268,6 +300,38 @@
           "passed": true
         },
         {
+          "name": "Produto repetido não cria pedido nem deixa estoque negativo",
+          "passed": true
+        },
+        {
+          "name": "Erro de produto repetido orienta a correção",
+          "passed": true
+        },
+        {
+          "name": "Quantidade fora da precisão segura é recusada",
+          "passed": true
+        },
+        {
+          "name": "Saldo ausente impede o registro",
+          "passed": true
+        },
+        {
+          "name": "Item malformado é recusado sem exceção",
+          "passed": true
+        },
+        {
+          "name": "Lista malformada é recusada sem exceção",
+          "passed": true
+        },
+        {
+          "name": "Canal malicioso é recusado sem inserir HTML",
+          "passed": true
+        },
+        {
+          "name": "Registro usa preço do catálogo e remove campos não previstos",
+          "passed": true
+        },
+        {
           "name": "Sem transbordamento horizontal: pedidos",
           "passed": true
         },
@@ -304,7 +368,7 @@
           "route": "novo",
           "viewport": 390,
           "content": 390,
-          "scrollHeight": 1812,
+          "scrollHeight": 1735,
           "bodyHeight": 1000
         },
         {
@@ -425,6 +489,38 @@
           "passed": true
         },
         {
+          "name": "Produto repetido não cria pedido nem deixa estoque negativo",
+          "passed": true
+        },
+        {
+          "name": "Erro de produto repetido orienta a correção",
+          "passed": true
+        },
+        {
+          "name": "Quantidade fora da precisão segura é recusada",
+          "passed": true
+        },
+        {
+          "name": "Saldo ausente impede o registro",
+          "passed": true
+        },
+        {
+          "name": "Item malformado é recusado sem exceção",
+          "passed": true
+        },
+        {
+          "name": "Lista malformada é recusada sem exceção",
+          "passed": true
+        },
+        {
+          "name": "Canal malicioso é recusado sem inserir HTML",
+          "passed": true
+        },
+        {
+          "name": "Registro usa preço do catálogo e remove campos não previstos",
+          "passed": true
+        },
+        {
           "name": "Sem transbordamento horizontal: pedidos",
           "passed": true
         },
@@ -461,7 +557,7 @@
           "route": "novo",
           "viewport": 320,
           "content": 320,
-          "scrollHeight": 1858,
+          "scrollHeight": 1781,
           "bodyHeight": 1000
         },
         {
@@ -475,6 +571,10 @@
     }
   ],
   "regressions": [
+    {
+      "name": "Abertura direta do HTML carrega regras e interface",
+      "passed": true
+    },
     {
       "name": "Restaura pedidos e saldos válidos após recarregar",
       "passed": true

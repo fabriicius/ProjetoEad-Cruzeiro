@@ -56,6 +56,24 @@
   check('Resultado mostra o saldo de todos os produtos',JSON.stringify(balances())===JSON.stringify(expectedBalances));
   document.getElementById('advance-status').click();
   check('Mudança de status preserva ambos os saldos',JSON.stringify(balances())===JSON.stringify(expectedBalances));
+  api.reset();api.getDraft().items.push({sku:'COQ-001',q:2,unit:3990});
+  const beforeDuplicate=JSON.stringify({stocks:api.getState().stocks,orders:api.getState().orders});
+  check('Produto repetido não cria pedido nem deixa estoque negativo',api.register()===false&&JSON.stringify({stocks:api.getState().stocks,orders:api.getState().orders})===beforeDuplicate);
+  api.render('resultado');
+  check('Erro de produto repetido orienta a correção',document.querySelector('.error-copy').textContent.includes('produto repetido'));
+  api.reset();api.getDraft().items[0].q=Number.MAX_SAFE_INTEGER+1;
+  check('Quantidade fora da precisão segura é recusada',api.register()===false&&api.getState().stocks['COQ-001']===2);
+  api.reset();delete api.getState().stocks['COQ-001'];
+  check('Saldo ausente impede o registro',api.register()===false&&api.getState().orders.length===40);
+  api.reset();api.getDraft().items=[null];
+  check('Item malformado é recusado sem exceção',api.register()===false&&api.getState().orders.length===40);
+  api.reset();api.getDraft().items=null;
+  check('Lista malformada é recusada sem exceção',api.register()===false&&api.getState().orders.length===40);
+  api.reset();api.getDraft().channel='<img data-malicious="true" src="x" onerror="window.OFF_INJECTED=true">';
+  const rejectedChannel=api.register()===false;api.render('resultado');
+  check('Canal malicioso é recusado sem inserir HTML',rejectedChannel&&!document.querySelector('[data-malicious]')&&!window.OFF_INJECTED);
+  api.reset();api.getDraft().items[0].unit=1;api.getDraft().items[0].extra='campo não permitido';
+  check('Registro usa preço do catálogo e remove campos não previstos',api.register()===true&&api.getState().orders[0].items[0].unit===3990&&!Object.hasOwn(api.getState().orders[0].items[0],'extra'));
   const layouts=[];
   for(const route of ['pedidos','novo','resultado']){
    if(route==='resultado'){api.reset();api.register();}

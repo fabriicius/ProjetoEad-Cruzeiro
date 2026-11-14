@@ -20,6 +20,8 @@ Acesse `http://127.0.0.1:8765/`. Para encerrar o servidor, use Ctrl+C.
 
 As regras de validação do estado, cálculo de totais e identificação dos pedidos ficam em `order-rules.js`, sem acesso ao DOM ou ao armazenamento. O arquivo `app.js` cuida da navegação, das telas e da persistência. Os scripts são carregados nessa ordem, mantendo a abertura direta de `index.html`.
 
+Antes de registrar uma venda, as regras também recusam produtos repetidos, quantidades fora da precisão segura, produtos desconhecidos e saldos inválidos. Os itens são reconstruídos somente com SKU, quantidade e preço do catálogo, ignorando preços e campos extras recebidos no rascunho. A validação de todos os itens termina antes de criar o pedido ou reduzir o estoque.
+
 A navegação normal salva os dados fictícios no armazenamento local do navegador. Ao reabrir a página, o protótipo valida os pedidos e saldos. Dados inválidos fazem a demonstração voltar ao estado inicial. Se o navegador bloquear o armazenamento, a navegação continua em memória, sem garantia de manter as alterações após recarregar.
 
 Para preparar capturas com dados iniciais, abra `index.html?captura=1`. Os parâmetros `tela=novo`, `tela=resultado` e `tela=resultado&estado=erro` permitem abrir os estados da demonstração. Testes e páginas com `captura`, `teste` ou `tela` trabalham em memória e não alteram os dados salvos da navegação normal.
@@ -42,7 +44,7 @@ Em Linux, se faltarem bibliotecas do sistema, use `npx playwright install --with
 
 Se quiser usar um Google Chrome já instalado, execute `PLAYWRIGHT_CHANNEL=chrome npm test`. Essa alternativa não exige o download do Chromium. Node.js e Playwright são usados somente nas verificações; a interface continua sem dependências externas em execução.
 
-O workflow `.github/workflows/verificacoes.yml` executa `npm test` em pushes e pull requests para `main`, e também pode ser iniciado manualmente. O relatório da execução fica disponível como artefato `verificacao-prototipo` no GitHub Actions por 14 dias. O workflow não altera automaticamente o relatório versionado.
+O workflow `.github/workflows/verificacoes.yml` executa `npm test` em pushes para `main` e `develop`, em pull requests para `main`, e também pode ser iniciado manualmente. O relatório da execução fica disponível como artefato `verificacao-prototipo` no GitHub Actions por 14 dias. O workflow não altera automaticamente o relatório versionado.
 
 `contraste.json` registra o cálculo das combinações principais de texto e fundo, todas acima de 4,5:1. Isso não constitui auditoria completa de acessibilidade. A avaliação com representante externo, a operação em aparelhos reais, o teste integral de teclado, leitor de tela e ampliação de texto ainda deverão ocorrer.
 

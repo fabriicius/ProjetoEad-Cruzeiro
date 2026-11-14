@@ -2,7 +2,7 @@ name: Verificações do protótipo
 
 on:
   push:
-    branches: [main]
+    branches: [main, develop]
   pull_request:
     branches: [main]
   workflow_dispatch:

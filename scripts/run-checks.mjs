@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { createServer } from 'node:http';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { chromium } from 'playwright';
 
 const root=fileURLToPath(new URL('../',import.meta.url));
@@ -30,6 +30,14 @@ async function run(){
   report.browserVersion=browser.version();
   const context=await browser.newContext({locale:'pt-BR',timezoneId:'America/Sao_Paulo'});
   context.setDefaultTimeout(15000);
+  await check('Abertura direta do HTML carrega regras e interface',async()=>{
+    const local=await context.newPage();
+    try{
+      await local.goto(pathToFileURL(resolve(root,'index.html')).href+'?captura=1');
+      assert.equal(await local.locator('tbody tr').count(),20);
+      assert.equal(await local.evaluate(()=>typeof OffOrderRules.validateOrder),'function');
+    }finally{await local.close();}
+  });
   for(const width of [1440,390,320]){
     const page=await context.newPage(),errors=[];
     page.on('pageerror',error=>errors.push(error.message));
