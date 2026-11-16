@@ -1,5 +1,8 @@
 """Configuração HTTP para execução local e para o proxy da Vercel."""
-from urllib.parse import urlsplit
+import hashlib
+import hmac
+from urllib.parse import unquote, urlsplit
+from django.core.exceptions import ImproperlyConfigured
 
 
 def web_settings(env):
@@ -20,3 +23,30 @@ def web_settings(env):
         "CSRF_TRUSTED_ORIGINS": list(dict.fromkeys(origins)),
         "SECURE_PROXY_SSL_HEADER": ("HTTP_X_FORWARDED_PROTO", "https") if on_vercel else None,
     }
+
+
+def application_secret(env):
+    """Evita configurar uma segunda credencial no protótipo com Prisma integrado."""
+    explicit = env.get("DJANGO_SECRET_KEY", "").strip()
+    if explicit:
+        return explicit
+    password = ""
+    for name in ("DATABASE_URL_POOLED", "DATABASE_URL", "POSTGRES_URL", "PRISMA_DATABASE_URL", "DIRECT_URL"):
+        value = env.get(name, "")
+        if not value:
+            continue
+        try:
+            parsed = urlsplit(value)
+            if parsed.scheme in ("postgres", "postgresql") and parsed.password:
+                password = unquote(parsed.password)
+                break
+        except ValueError:
+            continue
+    if not password:
+        password = env.get("POSTGRES_PASSWORD", "")
+    if not password:
+        raise ImproperlyConfigured(
+            "Vincule o banco Prisma Postgres ao projeto na Vercel. "
+            "A integração fornece as credenciais automaticamente; não é necessário configurar DJANGO_SECRET_KEY."
+        )
+    return hmac.new(password.encode(), b"off-nutrition-lab:django-secret:v1", hashlib.sha512).hexdigest()

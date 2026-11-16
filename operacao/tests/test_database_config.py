@@ -40,3 +40,7 @@ class DatabaseConfigTests(SimpleTestCase):
             with self.subTest(url=url), self.assertRaises(ImproperlyConfigured) as error:
                 database_config({"DATABASE_URL": url})
             self.assertNotIn("secret", str(error.exception))
+
+    def test_vercel_does_not_silently_connect_to_localhost(self):
+        with self.assertRaisesMessage(ImproperlyConfigured, 'Vincule o Prisma Postgres'):
+            database_config({'VERCEL': '1'})
