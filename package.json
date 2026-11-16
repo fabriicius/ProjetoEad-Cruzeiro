@@ -2,11 +2,21 @@
   "name": "off-nutrition-lab-prototipo",
   "version": "1.0.0",
   "private": true,
-  "description": "Protótipo local de pedidos e estoque da OFF Nutrition Lab",
+  "description": "MVP OFF Nutrition Lab com Django e PostgreSQL",
   "scripts": {
-    "test": "node scripts/run-checks.mjs",
-    "test:report": "node scripts/run-checks.mjs --update-report"
+    "test": "npm run test:unit && npm run test:backend",
+    "test:unit": "node --test tests/order-rules.test.mjs",
+    "test:backend": "python manage.py test --noinput",
+    "test:coverage": "node scripts/run-coverage.mjs"
   },
-  "engines": { "node": ">=22" },
-  "devDependencies": { "playwright": "1.65.1" }
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "istanbul-lib-coverage": "3.2.2",
+    "istanbul-lib-report": "3.0.1",
+    "istanbul-reports": "3.2.0",
+    "playwright": "1.65.1",
+    "v8-to-istanbul": "9.3.0"
+  }
 }

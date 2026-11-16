@@ -1,0 +1,8 @@
+[run]
+source = operacao
+omit =
+    operacao/tests/*
+    operacao/migrations/*
+
+[report]
+show_missing = True

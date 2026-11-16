@@ -1,0 +1,7 @@
+{% load static %}
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Entrar | OFF Nutrition Lab</title><link rel="stylesheet" href="{% static 'style.css' %}"></head>
+<body><main style="max-width:460px;margin:8vh auto;padding:24px"><h1>OFF Nutrition Lab</h1><p>Entre para acessar pedidos e estoque.</p><form method="post">{% csrf_token %}
+{% if form.errors %}<p role="alert">Não foi possível entrar. Confira suas credenciais.</p>{% endif %}
+<div class="field"><label for="id_username">Usuário</label><input id="id_username" name="username" autocomplete="username" required autofocus maxlength="150"></div>
+<div class="field"><label for="id_password">Senha</label><input id="id_password" type="password" name="password" autocomplete="current-password" required></div>
+<input type="hidden" name="next" value="{{ next }}"><button class="button primary" type="submit">Entrar</button></form></main></body></html>

@@ -1,0 +1,13 @@
+.git/
+.venv/
+node_modules/
+.env
+.env.*
+LOCAL_ACCESS.md
+*.dump
+test-results/
+coverage/
+htmlcov/
+.coverage*
+__pycache__/
+.vercel/
