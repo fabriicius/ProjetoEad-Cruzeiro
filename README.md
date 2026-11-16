@@ -91,6 +91,10 @@ docker compose exec -T db sh -c 'pg_dump -U "$POSTGRES_USER" -d "$POSTGRES_DB" -
 
 Guarde o arquivo fora do repositório, com acesso restrito. Para validar a restauração, crie outro banco e use `pg_restore`, sem sobrescrever a base em uso. Em produção, programe backups diários, retenção e testes de restauração no provedor.
 
+## Monitoramento
+
+A rota `/health/` verifica a conexão ao banco. O workflow `disponibilidade.yml` consulta esse endpoint a cada cinco minutos depois de configurada a variável `APP_URL` e integrado o arquivo à branch padrão. O resumo distingue UP, DOWN e ausência de URL. Consulte o [guia de monitoramento](MONITORAMENTO.md) para ativação, notificações e prints.
+
 ## Testes
 
 Com o banco local ativo e o ambiente virtual preparado:

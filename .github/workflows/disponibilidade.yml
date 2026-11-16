@@ -1,0 +1,41 @@
+name: Monitorar disponibilidade
+
+on:
+  schedule:
+    - cron: '2-57/5 * * * *'
+  workflow_dispatch:
+  push:
+    branches: [main, develop]
+    paths:
+      - '.github/workflows/disponibilidade.yml'
+      - 'scripts/check_availability.py'
+      - 'operacao/views.py'
+      - 'operacao/urls.py'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: monitor-disponibilidade
+  cancel-in-progress: false
+
+jobs:
+  disponibilidade:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    env:
+      APP_URL: ${{ vars.APP_URL }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+      - name: Verificar aplicação e banco
+        run: python scripts/check_availability.py
+      - name: Salvar evidência de disponibilidade
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: disponibilidade-${{ github.run_id }}
+          path: test-results/availability.json
+          retention-days: 30

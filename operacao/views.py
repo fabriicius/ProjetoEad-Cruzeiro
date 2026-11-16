@@ -84,3 +84,19 @@ def order_detail(request, pk):
 def order_status(request, pk):
     order = avancar_status(pedido_id=pk, novo_status=body(request).get("status"))
     return JsonResponse({"order": order_json(Pedido.objects.prefetch_related("itens__produto").get(pk=order.pk))})
+
+
+@require_GET
+def health(request):
+    """Readiness pública: verifica a aplicação e uma consulta mínima ao banco."""
+    from django.db import connection
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT 1")
+            healthy = cursor.fetchone() == (1,)
+    except DatabaseError:
+        healthy = False
+    status = "UP" if healthy else "DOWN"
+    response = JsonResponse({"status": status, "database": status}, status=200 if healthy else 503)
+    response["Cache-Control"] = "no-store, max-age=0"
+    return response
