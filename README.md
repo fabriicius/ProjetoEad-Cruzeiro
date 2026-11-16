@@ -2,7 +2,7 @@
 
 Para publicar esta implementação, siga o [guia de deploy na Vercel](DEPLOY_VERCEL.md).
 
-Aplicação web com Python 3.13, Django 5.2 e PostgreSQL 17. A interface usa HTML, CSS e JavaScript. Produtos, pedidos, itens, dúvidas frequentes, usuários e sessões ficam no PostgreSQL, acessado pelo ORM do Django e pelo driver Psycopg. Não há persistência de negócio em localStorage ou fallback para SQLite.
+Aplicação  web com Python 3.13, Django 5.2 e PostgreSQL 17. A interface usa HTML, CSS e JavaScript. Produtos, pedidos, itens, dúvidas frequentes, usuários e sessões ficam no PostgreSQL, acessado pelo ORM do Django e pelo driver Psycopg. Não há persistência de negócio em localStorage ou fallback para SQLite.
 
 ## Prisma Postgres na Vercel
 
@@ -90,6 +90,10 @@ docker compose exec -T db sh -c 'pg_dump -U "$POSTGRES_USER" -d "$POSTGRES_DB" -
 ```
 
 Guarde o arquivo fora do repositório, com acesso restrito. Para validar a restauração, crie outro banco e use `pg_restore`, sem sobrescrever a base em uso. Em produção, programe backups diários, retenção e testes de restauração no provedor.
+
+## Monitoramento
+
+A rota `/health/` verifica a conexão ao banco. O workflow `disponibilidade.yml` consulta esse endpoint a cada cinco minutos depois de configurada a variável `APP_URL` e integrado o arquivo à branch padrão. O resumo distingue UP, DOWN e ausência de URL. Consulte o [guia de monitoramento](MONITORAMENTO.md) para ativação, notificações e prints.
 
 ## Testes
 

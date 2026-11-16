@@ -27,3 +27,5 @@ As migrações já foram aplicadas no banco configurado. Em futuras alterações
 O build não cria usuários, não inclui dados fictícios e não executa migrações automaticamente. A conta existente no banco pode ser utilizada para entrar na aplicação.
 
 Após o deploy, confira `/entrar/`, o login, o catálogo, as dúvidas frequentes e `/admin/`. Os estáticos devem carregar, a sessão deve persistir e as telas devem consultar o banco remoto. O deployment na Vercel será feito pelo proprietário do projeto; o envio desta implementação ao Git não comprova a publicação.
+
+Para habilitar a verificação periódica após publicar, configure `APP_URL` no GitHub seguindo o [guia de monitoramento](MONITORAMENTO.md).
