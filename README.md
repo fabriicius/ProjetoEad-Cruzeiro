@@ -2,7 +2,7 @@
 
 Para publicar esta implementação, siga o [guia de deploy na Vercel](DEPLOY_VERCEL.md).
 
-Aplicação web com Python 3.13, Django 5.2 e PostgreSQL 17. A interface usa HTML, CSS e JavaScript. Produtos, pedidos, itens, dúvidas frequentes, usuários e sessões ficam no PostgreSQL, acessado pelo ORM do Django e pelo driver Psycopg. Não há persistência de negócio em localStorage ou fallback para SQLite.
+Aplicação  web com Python 3.13, Django 5.2 e PostgreSQL 17. A interface usa HTML, CSS e JavaScript. Produtos, pedidos, itens, dúvidas frequentes, usuários e sessões ficam no PostgreSQL, acessado pelo ORM do Django e pelo driver Psycopg. Não há persistência de negócio em localStorage ou fallback para SQLite.
 
 ## Prisma Postgres na Vercel
 
