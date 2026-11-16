@@ -6,7 +6,7 @@ import libCoverage from 'istanbul-lib-coverage';
 import libReport from 'istanbul-lib-report';
 import reports from 'istanbul-reports';
 
-export const productionFiles=['app.js','order-rules.js'];
+export const productionFiles=['assets/app.js','assets/order-rules.js'];
 
 // Interrompe a coleta antes de navegar para não perder o contexto anterior.
 export class BrowserCoverage {
@@ -54,7 +54,7 @@ export async function writeCoverage(root,entries){
   const sources=new Map();
   for(const file of productionFiles){
     const path=resolve(root,file),source=await readFile(path,'utf8');
-    sources.set(file,{path,source});
+    sources.set(basename(file),{path,source});
     // Inclui todo o código de produção no denominador, mesmo sem execução.
     const converter=v8toIstanbul(path,0,{source});
     await converter.load();

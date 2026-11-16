@@ -1,4 +1,4 @@
-name: Verificações do protótipo
+name: Verificações do MVP
 
 on:
   push:
@@ -14,26 +14,58 @@ jobs:
   testes:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_DB: offlab
+          POSTGRES_USER: offlab
+          POSTGRES_PASSWORD: somente-ci
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U offlab -d offlab"
+          --health-interval 3s --health-timeout 3s --health-retries 20
+    env:
+      DJANGO_SECRET_KEY: chave-descartavel-exclusiva-para-testes-ci
+      DJANGO_DEBUG: '1'
+      POSTGRES_DB: offlab
+      POSTGRES_USER: offlab
+      POSTGRES_PASSWORD: somente-ci
+      POSTGRES_HOST: 127.0.0.1
+      POSTGRES_PORT: '5432'
     steps:
       - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
       - uses: actions/setup-node@v6
         with:
           node-version: '22'
           cache: npm
-      - name: Instalar dependências de teste
-        run: npm ci
-      - name: Instalar Chromium
-        run: npx playwright install --with-deps chromium
-      - name: Executar testes e medir cobertura
-        run: npm run test:coverage
-      - name: Salvar relatórios de testes e cobertura
+      - name: Preparar Python e dependências
+        run: |
+          python -m venv .venv
+          .venv/bin/python -m pip install -r requirements-dev.txt
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Conferir migrações e arquivos estáticos
+        run: |
+          .venv/bin/python manage.py makemigrations --check --dry-run
+          .venv/bin/python manage.py collectstatic --noinput
+      - name: Testar com PostgreSQL e medir cobertura
+        run: |
+          npm run test:coverage
+          .venv/bin/python -m coverage report
+          .venv/bin/python -m coverage html
+      - name: Salvar relatórios
         if: always()
         uses: actions/upload-artifact@v5
         with:
-          name: verificacao-prototipo
+          name: verificacao-mvp
           path: |
             test-results/verificacao.json
             coverage/
+            htmlcov/
             !coverage/browser-v8.json
             !coverage/node-*/**
           if-no-files-found: warn

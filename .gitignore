@@ -1,3 +1,16 @@
 node_modules/
 test-results/
 coverage/
+.venv/
+.env
+__pycache__/
+*.py[cod]
+staticfiles/
+.coverage*
+htmlcov/
+*.dump
+LOCAL_ACCESS.md
+.env.*
+!.env.example
+!.coveragerc
+.vercel/

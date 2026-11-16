@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 
 // O módulo deve funcionar sem document, window ou localStorage.
 const sandbox={};
-const rulesFile=fileURLToPath(new URL('../order-rules.js',import.meta.url));
+const rulesFile=fileURLToPath(new URL('../assets/order-rules.js',import.meta.url));
 vm.runInNewContext(readFileSync(rulesFile,'utf8'),sandbox,{filename:rulesFile});
 const rules=sandbox.OffOrderRules;
 const config={products:[{sku:'COQ-001'},{sku:'CAT-001'}],channels:['WhatsApp'],statuses:{novo:'Novo'}};

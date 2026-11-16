@@ -18,7 +18,7 @@ try{
   await mkdir(resolve(root,'coverage'),{recursive:true});
   const nodeDir=await mkdtemp(resolve(root,'coverage/node-'));
   await run(['--test','tests/order-rules.test.mjs'],{...process.env,NODE_V8_COVERAGE:nodeDir});
-  await run(['scripts/run-checks.mjs','--coverage']);
+  await new Promise((resolve,reject)=>{const child=spawn(process.env.OFFLAB_PYTHON||'.venv/bin/python',['-m','coverage','run','manage.py','test','--noinput'],{cwd:root,env:process.env,stdio:'inherit'});child.once('error',reject);child.once('exit',code=>code===0?resolve():reject(new Error('Testes Django reprovados.')));});
   const entries=JSON.parse(await readFile(resolve(root,'coverage/browser-v8.json'),'utf8'));
   for(const file of await readdir(nodeDir)){
     if(file.endsWith('.json'))entries.push(...JSON.parse(await readFile(resolve(nodeDir,file),'utf8')).result);
@@ -29,7 +29,7 @@ try{
   await writeFile(resolve(root,'coverage/measurement.json'),JSON.stringify(measurement,null,2)+'\n');
   if(process.env.GITHUB_STEP_SUMMARY){
     const checks=JSON.parse(await readFile(resolve(root,'test-results/verificacao.json'),'utf8'));
-    const count=checks.regressions.length+checks.viewports.reduce((sum,viewport)=>sum+viewport.results.length,0);
+    const count=checks.checks.length;
     const summary=[
       '## Testes e cobertura','',
       `Testes unitários e de integração: **PASS**. Verificações no navegador: **${count} aprovadas**.`,'',
@@ -38,7 +38,7 @@ try{
       `| Funções | ${measurement.summary.functions.pct}% |`,
       `| Ramos | ${measurement.summary.branches.pct}% |`,
       `| Duração total | ${(measurement.durationMs/1000).toFixed(2)} s |`,'',
-      'Escopo: `app.js` e `order-rules.js`. Relatórios disponíveis no artefato `verificacao-prototipo`.',''
+      'Escopo JavaScript: `assets/app.js` e `assets/order-rules.js`. A cobertura Python é medida separadamente com coverage.py. Relatórios disponíveis no artefato `verificacao-mvp`.',''
     ].join('\n');
     await appendFile(process.env.GITHUB_STEP_SUMMARY,summary);
   }

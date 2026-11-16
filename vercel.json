@@ -1,0 +1,10 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "django",
+  "functions": {
+    "offlab/wsgi.py": {
+      "maxDuration": 60,
+      "excludeFiles": "{node_modules/**,.venv/**,tests/**,operacao/tests/**,coverage/**,htmlcov/**,test-results/**,.env*,LOCAL_ACCESS.md,*.dump}"
+    }
+  }
+}
