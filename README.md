@@ -1,12 +1,12 @@
 # OFF Nutrition Lab: pedidos e estoque
 
-Para publicar esta implementação, siga o [guia de deploy na Vercel](DEPLOY_VERCEL.md).
+Para publicar este protótipo, importe o repositório e vincule o banco Prisma Postgres ao projeto. Os parâmetros do Django são automáticos; não é necessário preencher variáveis manualmente. Veja o [guia de deploy na Vercel](DEPLOY_VERCEL.md).
 
 Aplicação  web com Python 3.13, Django 5.2 e PostgreSQL 17. A interface usa HTML, CSS e JavaScript. Produtos, pedidos, itens, dúvidas frequentes, usuários e sessões ficam no PostgreSQL, acessado pelo ORM do Django e pelo driver Psycopg. Não há persistência de negócio em localStorage ou fallback para SQLite.
 
 ## Prisma Postgres na Vercel
 
-A aplicação aceita as URLs disponibilizadas pela integração Prisma Postgres. Em `.env`, defina `DATABASE_URL` com a conexão **direta** e `DATABASE_URL_POOLED` com a conexão **com pool**. Não grave as credenciais no código. `.env.local` preserva a configuração local anterior e também é ignorado pelo Git.
+Na Vercel, a aplicação usa as conexões fornecidas automaticamente ao vincular o recurso Prisma Postgres ao projeto. Para execução local, é possível definir `DATABASE_URL` com a conexão **direta** e `DATABASE_URL_POOLED` com a conexão **com pool** em `.env`. Não grave as credenciais no código. `.env.local` preserva a configuração local anterior e também é ignorado pelo Git.
 
 A aplicação prefere `DATABASE_URL_POOLED` para as consultas. A conexão exige SSL, desabilita cursores de servidor e prepared statements e fecha a conexão ao final da requisição, para funcionar com o pool transacional. Se não houver URLs configuradas, são utilizadas as variáveis locais `POSTGRES_*`.
 
@@ -129,6 +129,9 @@ O workflow `.github/workflows/verificacoes.yml` prepara PostgreSQL 17, Python 3.
 Endpoints internos: `GET /api/state/?page=1`, `POST /api/orders/`, `GET /api/orders/<id>/` e `POST /api/orders/<id>/status/`. Os POSTs exigem sessão e CSRF. As rotas `#pedidos`, `#novo` e `#resultado` continuam organizando as telas no navegador.
 
 ## Implantação
+
+Na Vercel, os valores de HTTPS, debug e domínios são automáticos. Sem `DJANGO_SECRET_KEY`, a chave da aplicação é derivada da credencial privada fornecida pela integração do banco. Não é necessário configurar essas variáveis manualmente. As opções abaixo continuam disponíveis para hospedagens próprias.
+
 
 A configuração padrão fora do `.env` local exige HTTPS e cookies seguros. Para produção, use `DJANGO_DEBUG=0`, chave secreta própria, `DJANGO_ALLOWED_HOSTS` explícito, PostgreSQL com conexão protegida (`POSTGRES_SSLMODE=verify-full` e certificado adequado), credenciais restritas para a aplicação e credenciais separadas para migrações. Prepare os estáticos com `python manage.py collectstatic --noinput` e execute `gunicorn offlab.wsgi:application`, atrás de um proxy com TLS. O WhiteNoise serve os estáticos coletados. A configuração de proxy deve preservar o reconhecimento de HTTPS pelo Django.
 

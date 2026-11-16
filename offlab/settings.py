@@ -1,14 +1,12 @@
 import os
 from pathlib import Path
-from django.core.exceptions import ImproperlyConfigured
 from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-load_dotenv(BASE_DIR / ".env")
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "")
-if not SECRET_KEY:
-    raise ImproperlyConfigured("Defina DJANGO_SECRET_KEY no ambiente ou no arquivo .env.")
-from .deployment import web_settings
+if os.environ.get("VERCEL") != "1":
+    load_dotenv(BASE_DIR / ".env")
+from .deployment import application_secret, web_settings
+SECRET_KEY = application_secret(os.environ)
 web_config = web_settings(os.environ)
 DEBUG = web_config["DEBUG"]
 ALLOWED_HOSTS = web_config["ALLOWED_HOSTS"]

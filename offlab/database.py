@@ -30,6 +30,8 @@ def database_config(env, *, direct=False, use_urls=True):
             }
         except (ValueError, TypeError):
             raise ImproperlyConfigured("A URL PostgreSQL é inválida. Confira as variáveis de conexão.") from None
+    if use_urls and env.get("VERCEL") == "1":
+        raise ImproperlyConfigured("Vincule o Prisma Postgres a este projeto da Vercel para disponibilizar a conexão automaticamente.")
     return {
         "ENGINE": "django.db.backends.postgresql", "NAME": env.get("POSTGRES_DB", "offlab"),
         "USER": env.get("POSTGRES_USER", "offlab"), "PASSWORD": env.get("POSTGRES_PASSWORD", ""),
